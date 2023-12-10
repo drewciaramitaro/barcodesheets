@@ -3,12 +3,12 @@
 
 @font-face {
     font-family: 'TITLE';
-    src: url('Clarendon.ttf');
+    src: url('fonts/Clarendon.ttf');
 }
 
 @font-face {
     font-family: 'BODY';
-    src: url('LiberationSans.ttf');
+    src: url('fonts/LiberationSans.ttf');
 }
  
 table {
