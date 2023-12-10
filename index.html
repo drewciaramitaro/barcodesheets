@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/barcodes/JsBarcode.ean-upc.min.js"></script>
+    <link rel="stylesheet" href="pctools.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="error-popup-wrap" class="error-popup-wrapper">
+        <div class="error-popup">
+            <h3>Invalid UPC</h3>
+            <p id="error-msg">Make sure the UPC only contains numbers and that is is no more than 11 digits.</p>
+            
+            <button onclick="hide_error_popup()" class="action" id="close-error">OK</button>
+        </div>
+    </div>
+
+    <div class="tool" style="display:flex;flex-direction: column;">
+        <form style="display:flex;align-items: center;">
+            <div class="input-grp">
+                <label for="new-upc-code">UPC</label>
+                <input id="new-upc-code" type="text">
+            </div>
+
+            <div class="input-grp">
+                <label for="new-upc-label">Label (Optional)</label>
+                <input type="text" id="new-upc-label">
+            </div>
+
+            <div class="input-grp">
+                <label for="new-upc-scancount">Scan # of times</label>
+                <input min="1" max="99" style="width: 120px;" id="new-upc-scancount" type="number" value="1">
+            </div>
+            <a class="action" onclick="add_upc()">Add</a>
+        </form>
+
+        <button class="print action" onclick="window.print()">Save/Print</button>
+        <small style="text-align: center;">To download, press Save/Print and select Microsoft Print to PDF</small>
+    </div>
+
+    <div id="content-barcodegen">
+
+        <div class="header">
+            <input placeholder="Type a page header here" class="header-input" />
+        </div>
+        <div id="barcodes">
+
+
+        </div>
+
+        <template id="upc-template">
+            <div class="mbarcode">
+                <span id="label" style="text-align: center; font-size:12px;padding-bottom: 0px;font-weight: 600;transform: translateY(10px);font-family: Nunito;" class="day"></span>
+                <svg class="barcode" jsbarcode-format="upc"></svg>
+
+                <span id="sc" style="text-align: center;" class="day"></span>
+                <a class="delete action" style="position:absolute;float:right">Delete</a>
+            </div>
+        </template>
+
+    </div>
+
+    <script>
+        //JsBarcode(".barcode").init();
+
+        function add_upc() {
+            const upc = document.getElementById("new-upc-code").value
+            const count = document.getElementById("new-upc-scancount").value
+            const label = document.getElementById("new-upc-label").value
+            const padded = upc.padStart(11, 0)
+
+            if(upc == ""){
+                show_error_popup("Please enter a UPC.")
+                return
+            }
+
+            if(isNaN(parseInt(upc))){
+                show_error_popup("Make sure the UPC only contains numbers.")
+                return
+            }
+            if(padded.length > 11){
+                show_error_popup("Make sure the UPC only contains numbers and that is is no more than 11 digits.")
+                return
+            }
+
+
+            const container = document.getElementById("barcodes")
+
+            const template = document.getElementById("upc-template")
+
+            const bcode = template.content.cloneNode(true);
+            const svg = bcode.querySelectorAll("svg")[0]
+            svg.setAttribute("jsbarcode-value", padded)
+
+            bcode.querySelectorAll(".mbarcode")[0].setAttribute("id", upc)
+            bcode.querySelectorAll(".delete")[0].setAttribute("onClick", `del_code(${upc})`)
+
+            if (label != ""){
+                bcode.querySelectorAll(".day#label")[0].innerHTML = label
+            }
+            else{
+                bcode.querySelectorAll(".day#label")[0].remove()
+            }
+
+            if (count != 1) {
+                bcode.querySelectorAll(".day#sc")[0].innerHTML = `Scan ${count} times`
+            }
+            else{
+                bcode.querySelectorAll(".day#sc")[0].remove()
+            }
+
+            container.appendChild(bcode)
+
+            console.log(padded)
+            JsBarcode(".barcode").init();
+        }
+
+        
+        function show_error_popup(msg) {
+            document.getElementById("error-popup-wrap").classList.add("showing")
+            document.getElementById("error-msg").innerHTML = msg
+        }
+        function hide_error_popup() {
+            document.getElementById("error-popup-wrap").classList.remove("showing")
+        }
+
+        function del_code(id) {
+            document.getElementById(id).remove()
+        }
+    </script>
+</body>
+
+</html>
