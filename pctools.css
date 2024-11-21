@@ -1,4 +1,9 @@
-
+/*
+    todo: clean this up
+    this contains a bunch of stuff
+    from my lineup generator, alot of stuff just placed 
+    randomly
+*/
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;700&display=swap');
 
 @font-face {
@@ -89,6 +94,8 @@ table {
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.089);
         border: 1px solid rgba(0, 0, 0, 0.144);
         background-color: white;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     form {
