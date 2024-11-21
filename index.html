@@ -4,9 +4,6 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/barcodes/JsBarcode.ean-upc.min.js"></script>
     <link rel="stylesheet" href="pctools.css">
-    <style>
-
-    </style>
 </head>
 
 <body>
@@ -20,6 +17,7 @@
     </div>
 
     <div class="tool" style="display:flex;flex-direction: column;">
+        <small style="text-align: center;">Created by Drew Ciaramitaro - Store #240 Webster</small>
         <form style="display:flex;align-items: center;">
             <div class="input-grp">
                 <label for="new-upc-code">UPC</label>
@@ -27,13 +25,13 @@
             </div>
 
             <div class="input-grp">
-                <label for="new-upc-label">Label (Optional)</label>
+                <label for="new-upc-label">Top Label (Optional)</label>
                 <input type="text" id="new-upc-label">
             </div>
 
             <div class="input-grp">
-                <label for="new-upc-scancount">Scan # of times</label>
-                <input min="1" max="99" style="width: 120px;" id="new-upc-scancount" type="number" value="1">
+                <label for="new-upc-scancount">Bottom Label (Optional)</label>
+                <input id="new-upc-scancount" type="text" value="">
             </div>
             <a class="action" onclick="add_upc()">Add</a>
         </form>
@@ -106,8 +104,8 @@
                 bcode.querySelectorAll(".day#label")[0].remove()
             }
 
-            if (count != 1) {
-                bcode.querySelectorAll(".day#sc")[0].innerHTML = `Scan ${count} times`
+            if (count != "") {
+                bcode.querySelectorAll(".day#sc")[0].innerHTML = count
             }
             else{
                 bcode.querySelectorAll(".day#sc")[0].remove()
