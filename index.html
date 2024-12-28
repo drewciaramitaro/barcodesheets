@@ -11,13 +11,14 @@
         <div class="error-popup">
             <h3>Invalid UPC</h3>
             <p id="error-msg">Make sure the UPC only contains numbers and that is is no more than 11 digits.</p>
-            
+
             <button onclick="hide_error_popup()" class="action" id="close-error">OK</button>
         </div>
     </div>
 
     <div class="tool" style="display:flex;flex-direction: column;">
-        <small style="text-align: center;">Created by Drew Ciaramitaro - Store #240 Webster</small>
+        <small style="text-align: center;font-family: CONDENSED;">Created by Drew Ciaramitaro - Store #240
+            Webster</small>
         <form style="display:flex;align-items: center;">
             <div class="input-grp">
                 <label for="new-upc-code">UPC</label>
@@ -52,7 +53,9 @@
 
         <template id="upc-template">
             <div class="mbarcode">
-                <span id="label" style="text-align: center; font-size:12px;padding-bottom: 0px;font-weight: 600;transform: translateY(10px);font-family: Nunito;" class="day"></span>
+                <span id="label"
+                    style="text-align: center; font-size:12px;padding-bottom: 0px;font-weight: 600;transform: translateY(10px);font-family: CONDENSED;"
+                    class="day"></span>
                 <svg class="barcode" jsbarcode-format="upc"></svg>
 
                 <span id="sc" style="text-align: center;" class="day"></span>
@@ -71,16 +74,16 @@
             const label = document.getElementById("new-upc-label").value
             const padded = upc.padStart(11, 0)
 
-            if(upc == ""){
+            if (upc == "") {
                 show_error_popup("Please enter a UPC.")
                 return
             }
 
-            if(isNaN(parseInt(upc))){
+            if (isNaN(parseInt(upc))) {
                 show_error_popup("Make sure the UPC only contains numbers.")
                 return
             }
-            if(padded.length > 11){
+            if (padded.length > 11) {
                 show_error_popup("Make sure the UPC only contains numbers and that is is no more than 11 digits.")
                 return
             }
@@ -93,21 +96,21 @@
             const bcode = template.content.cloneNode(true);
             const svg = bcode.querySelectorAll("svg")[0]
             svg.setAttribute("jsbarcode-value", padded)
+            bcode.querySelectorAll(".delete")[0].addEventListener('click', function () {
+                this.parentElement.remove()
+            });
 
-            bcode.querySelectorAll(".mbarcode")[0].setAttribute("id", upc)
-            bcode.querySelectorAll(".delete")[0].setAttribute("onClick", `del_code(${upc})`)
-
-            if (label != ""){
+            if (label != "") {
                 bcode.querySelectorAll(".day#label")[0].innerHTML = label
             }
-            else{
+            else {
                 bcode.querySelectorAll(".day#label")[0].remove()
             }
 
             if (count != "") {
                 bcode.querySelectorAll(".day#sc")[0].innerHTML = count
             }
-            else{
+            else {
                 bcode.querySelectorAll(".day#sc")[0].remove()
             }
 
@@ -117,7 +120,7 @@
             JsBarcode(".barcode").init();
         }
 
-        
+
         function show_error_popup(msg) {
             document.getElementById("error-popup-wrap").classList.add("showing")
             document.getElementById("error-msg").innerHTML = msg
